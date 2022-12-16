@@ -40,22 +40,10 @@ class SemiAutoLotteryScreen extends StatelessWidget {
             SizedBox(
               height: 25,
             ),
-            Stack(
-              children: [
-                Container(width: double.infinity,height: 100,color: Colors.white70,),
-                Positioned(top:10,child: Container(
-                  width: screenSize.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("현재 고정하신 숫자"),
-                      GestureDetector(onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => const HoldNumberPage())); },child: const Text("숫자 고정 하기 >")),
-                    ],
-                  ),
-                )),
-                Positioned.fill(child: ListView.builder(scrollDirection: Axis.horizontal,itemCount: 3,itemBuilder: (context,index)=>Text('1')))
-              ],
-            ),
+            Container(width: double.infinity,alignment: AlignmentDirectional.bottomEnd,margin: EdgeInsets.only(right: 20),child: GestureDetector(onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>HoldNumberPage()));
+            },child: Text("숫자 고정 Page ➤",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white70),))),
+            ShowNumberWidget(showText: "고정하신 숫자", numSet: [1,23,4]),
             SizedBox(
               height: 25,
             ),

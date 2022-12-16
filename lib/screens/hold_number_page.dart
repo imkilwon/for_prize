@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:for_prize/widgets/show_number_widget.dart';
+import 'package:for_prize/utils/utils.dart';
+import 'package:for_prize/widgets/simple_dialog_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class HoldNumberPage extends StatefulWidget {
   const HoldNumberPage({Key? key}) : super(key: key);
@@ -27,11 +30,25 @@ class _HoldNumberPageState extends State<HoldNumberPage> {
     }
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title:Text("숫자 고정 Screen"),elevation: 5,backgroundColor: Colors.blue[800],),
+      appBar: AppBar(
+        title: Text("숫자 고정 Screen"),
+        elevation: 5,
+        backgroundColor: Colors.blue[800],
+        actions: [TextButton(onPressed: ()async{
+            List<String> data = numberSet.map((e) => e.toString()).toList();
+            print("tlw");
+            await Utils().saveStringListData("Hold Number", data);
+            print("??");
+            await Utils().readStringListData("Hold Number");
+            print("!!");
+        }, child: Text("저장"))],
+      ),
       backgroundColor: Colors.blue[800],
       body: Column(
         children: [
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Container(
             alignment: Alignment.center,
             height: 50,
@@ -41,16 +58,17 @@ class _HoldNumberPageState extends State<HoldNumberPage> {
             ),
             width: screenSize.width,
             child: ListView.builder(
-
               scrollDirection: Axis.horizontal,
               itemCount: numberSet.length,
               itemBuilder: (context, index) => Padding(
-                padding: EdgeInsets.only(left : screenSize.width/20),
+                padding: EdgeInsets.only(left: screenSize.width / 20),
                 child: Number(numberSet[index]),
               ),
             ),
           ),
-          SizedBox(height: screenSize.height/8,),
+          SizedBox(
+            height: screenSize.height / 8,
+          ),
           Wrap(
             //가로로 길게 나열한 위젯들이 기기의 해상도를 초과할 경우
             //다음 줄에 나타날 수 있께 해주는 Wrap위젯 이용
@@ -67,23 +85,31 @@ class _HoldNumberPageState extends State<HoldNumberPage> {
                   //selected가 true가 되면 ChoiceChip이 선택되고 false면 선택되지 않는다.
                   onSelected: (newBool) {
                     //누르면 효과를 적어주기 위해 onSelected옵션
-                    setState(() {
-                      //눌렀을 때 화면의 상태를 어떻게 변경시킬지에 대해 적을 setState
-                      _isClicked[i] = !_isClicked[i];
-                      //selectedIndex에 i를 넣어서 해당 번호가 selected에서 true가 되게 만든다.
-                      //이러면 20을 누르면 selected에 20이 들어가고 색칠된 상태로 표시된다.
-                      //이후 5를 누르면 selected에 5가 들어가고 20의 색칠이 지워지고 5에 색칠이 된다.
-                      if (!(numberSet.contains(i + 1))) {
-                        //만약 누른 번호가 numberSet에 없다면?
-                        numberSet.add(i + 1);
-                        numberSet.sort();
-                        //numberSet에 해당 번호를 누른다.
-
-                      } else {
-                        numberSet.remove(i + 1);
-                        numberSet.sort();
-                      }
-                    });
+                    setState(
+                      () {
+                        if (numberSet.length > 5) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => SimpleDialogWidget("6개 이상의 숫자를 선택하실 수 없습니다.\n반자동에 고정할 숫자를 정하는 Page입니다.",context)
+                          );
+                        }else {
+                          //눌렀을 때 화면의 상태를 어떻게 변경시킬지에 대해 적을 setState
+                          _isClicked[i] = !_isClicked[i];
+                          //selectedIndex에 i를 넣어서 해당 번호가 selected에서 true가 되게 만든다.
+                          //이러면 20을 누르면 selected에 20이 들어가고 색칠된 상태로 표시된다.
+                          //이후 5를 누르면 selected에 5가 들어가고 20의 색칠이 지워지고 5에 색칠이 된다.
+                          if (!(numberSet.contains(i + 1))) {
+                            //만약 누른 번호가 numberSet에 없다면?
+                            numberSet.add(i + 1);
+                            numberSet.sort();
+                            //numberSet에 해당 번호를 누른다.
+                          } else {
+                            numberSet.remove(i + 1);
+                            numberSet.sort();
+                          }
+                        }
+                      },
+                    );
                   },
                 )
             ],
