@@ -21,12 +21,14 @@ class ShowNumberWidget extends StatelessWidget {
           children: [
             SizedBox(width: 10,),
             Text("${showText}",style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),),
-            Number(numSet[0]),
-            Number(numSet[1]),
-            Number(numSet[2]),
-            Number(numSet[3]),
-            Number(numSet[4]),
-            Number(numSet[5]),
+            Expanded(child: ListView.builder(itemCount: numSet.length,scrollDirection: Axis.horizontal,itemBuilder: (context,index)=> Number(numSet[index])))
+            //
+            // Number(numSet[0]),
+            // Number(numSet[1]),
+            // Number(numSet[2]),
+            // Number(numSet[3]),
+            // Number(numSet[4]),
+            // Number(numSet[5]),
           ],
         ),
       ),
