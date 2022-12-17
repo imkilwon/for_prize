@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:for_prize/screens/auto_lottery_screen.dart';
 import 'package:for_prize/screens/hold_number_page.dart';
 import 'package:for_prize/screens/semi_auto_lottery_screen.dart';
+import 'package:for_prize/utils/utils.dart';
 import 'package:for_prize/widgets/page_guide_box.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Utils.init();
+
   runApp(
     MaterialApp(
       home: ForPrize(),

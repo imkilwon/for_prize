@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:for_prize/main.dart';
 import 'package:for_prize/screens/hold_number_page.dart';
+import 'package:for_prize/utils/utils.dart';
 import 'package:for_prize/widgets/function_guide_widget.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
 
-class SemiAutoLotteryScreen extends StatelessWidget {
-  const SemiAutoLotteryScreen({Key? key}) : super(key: key);
+class SemiAutoLotteryScreen extends StatefulWidget {
+  SemiAutoLotteryScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SemiAutoLotteryScreen> createState() => _SemiAutoLotteryScreenState();
+}
+
+class _SemiAutoLotteryScreenState extends State<SemiAutoLotteryScreen> {
+  List<int> holdNumber=[];
+
+  @override
+  void initState(){
+    holdNumber = Utils().readStringListData("Hold Number");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +54,14 @@ class SemiAutoLotteryScreen extends StatelessWidget {
               height: 25,
             ),
             Container(width: double.infinity,alignment: AlignmentDirectional.bottomEnd,margin: EdgeInsets.only(right: 20),child: GestureDetector(onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>HoldNumberPage()));
+              setState(() {
+                holdNumber = Utils().readStringListData("Hold Number");
+              });
+            },child: Text("불러오기 ➤",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white70),))),
+            Container(width: double.infinity,alignment: AlignmentDirectional.bottomEnd,margin: EdgeInsets.only(right: 20),child: GestureDetector(onTap: ()async{
+             NavigateToHoldNumberPage(context);
             },child: Text("숫자 고정 Page ➤",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white70),))),
-            ShowNumberWidget(showText: "고정하신 숫자", numSet: [1,23,4]),
+            ShowNumberWidget(showText: "고정하신 숫자", numSet: holdNumber ),
             SizedBox(
               height: 25,
             ),
@@ -61,5 +79,15 @@ class SemiAutoLotteryScreen extends StatelessWidget {
         ),
       ),
     );
+
+  }
+
+  Future<void> NavigateToHoldNumberPage(BuildContext context) async {
+
+    var result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>HoldNumberPage()));
+    if (!mounted) return;
+    setState(() {
+      holdNumber = result;
+    });
   }
 }

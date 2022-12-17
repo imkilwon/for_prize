@@ -31,16 +31,22 @@ class _HoldNumberPageState extends State<HoldNumberPage> {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context,numberSet);
+          },
+          icon: Icon(Icons.close),
+        ),
         title: Text("숫자 고정 Screen"),
         elevation: 5,
         backgroundColor: Colors.blue[800],
-        actions: [TextButton(onPressed: ()async{
+        actions: [TextButton(onPressed: (){
             List<String> data = numberSet.map((e) => e.toString()).toList();
-            print("tlw");
-            await Utils().saveStringListData("Hold Number", data);
-            print("??");
-            await Utils().readStringListData("Hold Number");
-            print("!!");
+
+            Utils().saveStringListData("Hold Number", data);
+
+            Utils().readStringListData("Hold Number");
+
         }, child: Text("저장"))],
       ),
       backgroundColor: Colors.blue[800],
