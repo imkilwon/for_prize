@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:for_prize/main.dart';
 import 'package:for_prize/screens/hold_number_page.dart';
 import 'package:for_prize/screens/semi_auto_all_number_lottery_screen.dart';
+import 'package:for_prize/screens/semi_auto_select_number_lottery_screen.dart';
 import 'package:for_prize/utils/utils.dart';
 import 'package:for_prize/widgets/function_guide_widget.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
@@ -58,15 +59,15 @@ class _SemiAutoLotteryScreenState extends State<SemiAutoLotteryScreen> {
              NavigateToHoldNumberPage(context);
             },child: Text("숫자 고정 Page ➤",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white70),))),
             ShowNumberWidget(showText: "고정하신 숫자", numSet: holdNumber ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
               child: Text("고정하신 숫자를 제외하고 남은 숫자들을",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
             ),
-            FunctionGuideWidget(functionName: "전체 숫자 중 추첨", page: SemiAutoAllNumberLotteryScreen()),
-            FunctionGuideWidget(functionName: "선택한 숫자 중 추첨", page: ForPrize()),
+            const FunctionGuideWidget(functionName: "전체 숫자 중 추첨", page: SemiAutoAllNumberLotteryScreen()),
+            const FunctionGuideWidget(functionName: "선택한 숫자 중 추첨", page:SemiAutoSelectNumberLotteryScreen()),
             FunctionGuideWidget(
                 functionName: "각 구간별 개수 선택 후 추첨", page: ForPrize()),
             FunctionGuideWidget(
