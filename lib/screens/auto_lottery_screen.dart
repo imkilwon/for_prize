@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:for_prize/main.dart';
+import 'package:for_prize/screens/auto_all_number_lottery_screen.dart';
 import 'package:for_prize/widgets/function_guide_widget.dart';
 
 class AutoLotteryScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class AutoLotteryScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 50,),
-            FunctionGuideWidget(functionName: "전체 숫자 중 추첨", page: ForPrize()),
+            FunctionGuideWidget(functionName: "전체 숫자 중 추첨", page: AutoAllNumberLotteryScreen()),
             FunctionGuideWidget(functionName: "선택한 숫자 중 추첨", page: ForPrize()),
             FunctionGuideWidget(functionName: "각 구간별 개수 선택 후 추첨", page: ForPrize()),
             FunctionGuideWidget(functionName: "숫자 선택 후 구간별 개수 추첨", page: ForPrize()),

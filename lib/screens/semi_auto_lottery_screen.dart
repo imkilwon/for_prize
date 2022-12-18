@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:for_prize/main.dart';
 import 'package:for_prize/screens/hold_number_page.dart';
+import 'package:for_prize/screens/semi_auto_all_number_lottery_screen.dart';
 import 'package:for_prize/utils/utils.dart';
 import 'package:for_prize/widgets/function_guide_widget.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
@@ -53,11 +54,6 @@ class _SemiAutoLotteryScreenState extends State<SemiAutoLotteryScreen> {
             SizedBox(
               height: 25,
             ),
-            Container(width: double.infinity,alignment: AlignmentDirectional.bottomEnd,margin: EdgeInsets.only(right: 20),child: GestureDetector(onTap: (){
-              setState(() {
-                holdNumber = Utils().readStringListData("Hold Number");
-              });
-            },child: Text("불러오기 ➤",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white70),))),
             Container(width: double.infinity,alignment: AlignmentDirectional.bottomEnd,margin: EdgeInsets.only(right: 20),child: GestureDetector(onTap: ()async{
              NavigateToHoldNumberPage(context);
             },child: Text("숫자 고정 Page ➤",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white70),))),
@@ -65,7 +61,11 @@ class _SemiAutoLotteryScreenState extends State<SemiAutoLotteryScreen> {
             SizedBox(
               height: 25,
             ),
-            FunctionGuideWidget(functionName: "전체 숫자 중 추첨", page: ForPrize()),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0),
+              child: Text("고정하신 숫자를 제외하고 남은 숫자들을",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
+            ),
+            FunctionGuideWidget(functionName: "전체 숫자 중 추첨", page: SemiAutoAllNumberLotteryScreen()),
             FunctionGuideWidget(functionName: "선택한 숫자 중 추첨", page: ForPrize()),
             FunctionGuideWidget(
                 functionName: "각 구간별 개수 선택 후 추첨", page: ForPrize()),
