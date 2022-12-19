@@ -51,7 +51,7 @@ class _SemiAutoSelectNumberLotteryScreenState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "숫자 선택하여\n자동으로 \n번호 추첨하기",
+                        "숫자 선택하여\n반자동으로 \n번호 추첨하기",
                         style: TextStyle(
                             fontSize: 30,
                             color: Colors.white,
