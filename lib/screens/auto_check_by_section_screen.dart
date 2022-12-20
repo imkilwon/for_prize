@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:for_prize/main.dart';
 import 'package:for_prize/screens/auto_all_number_lottery_about_check_screen.dart';
+import 'package:for_prize/screens/auto_select_num_lottery_about_check_screen.dart';
 import 'package:for_prize/utils/utils.dart';
 
-class AutoAllNumberBySectionScreen extends StatefulWidget {
+class AutoCheckBySectionScreen extends StatefulWidget {
+
+  final int pageNum;
+  //pageNum == 1 -> 구간 선택만 / 2 -> 숫자 선택 후 구간 선택까지
+
   //모든 숫자에서 구간별 개수 선택하여 추출 스크린
-  const AutoAllNumberBySectionScreen({Key? key}) : super(key: key);
+  const AutoCheckBySectionScreen({Key? key,required this.pageNum}) : super(key: key);
 
   @override
-  State<AutoAllNumberBySectionScreen> createState() =>
-      _AutoAllNumberBySectionScreenState();
+  State<AutoCheckBySectionScreen> createState() =>
+      _AutoCheckBySectionScreenState();
 }
 
-class _AutoAllNumberBySectionScreenState
-    extends State<AutoAllNumberBySectionScreen> {
+class _AutoCheckBySectionScreenState
+    extends State<AutoCheckBySectionScreen> {
   List<String> sectionName = ["1~10", "11~20", "21~30", "31~40", "41~45"];
   List<List<int>> sectionCnt = [
     [0, 1, 2, 3, 4, 5, 6],
@@ -154,7 +159,7 @@ class _AutoAllNumberBySectionScreenState
                 Utils().showSnackBar(context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
               }
               else {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>AutoAllNumberLotteryAboutCheckScreen(result: result)));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> widget.pageNum ==1 ? AutoAllNumberLotteryAboutCheckScreen(result: result): AutoSelectNumLotteryAboutCheckScreen(result:result,)));
               }
 
             });

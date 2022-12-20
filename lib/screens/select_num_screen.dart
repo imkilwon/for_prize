@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:for_prize/screens/auto_check_by_section_screen.dart';
 import 'package:for_prize/screens/auto_select_number_lottery_screen.dart';
 import 'package:for_prize/screens/semi_auto_select_number_lottery_screen.dart';
 
@@ -111,7 +112,8 @@ class _SelectNumScreenState extends State<SelectNumScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => widget.pageNum == 1 ?
-                    AutoSelectNumberLotteryScreen(numberSet: numberSet)
+                    AutoSelectNumberLotteryScreen(numberSet: numberSet) : widget.pageNum== 2 ?
+                    AutoCheckBySectionScreen(pageNum: 2,)
                         : widget.pageNum == 3 ?
                     SemiAutoSelectNumberLotteryScreen(numberSet: numberSet)
                             : Utils()
