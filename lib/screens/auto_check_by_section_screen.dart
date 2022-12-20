@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
+import 'package:for_prize/main.dart';
+import 'package:for_prize/screens/auto_all_number_lottery_about_check_screen.dart';
+import 'package:for_prize/utils/utils.dart';
 
 class AutoAllNumberBySectionScreen extends StatefulWidget {
   //모든 숫자에서 구간별 개수 선택하여 추출 스크린
@@ -27,6 +31,7 @@ class _AutoAllNumberBySectionScreenState
     [false, false, false, false, false, false, false],
     [false, false, false, false, false, false, false],
   ];
+  List<int> result = [0,0,0,0,0];
 
   @override
   Widget build(BuildContext context) {
@@ -110,11 +115,17 @@ class _AutoAllNumberBySectionScreenState
                                       onChanged: (bool? value) {
                                         setState(
                                           () {
+                                            //현재 클릭한 것 제외하고는 모두 체크가 될 수 없게 하는 코드
+                                            isChecked[index_ex] = isChecked[index_ex].map((e)=>false).toList();
+                                            //누른 값이 체크 되게 함
                                             isChecked[index_ex][index_in] =
                                                 value!;
+                                            result[index_ex] = isChecked[index_ex].indexOf(true);
+                                            //모든 구간을 체크했으면, 숨겨진 Floating Button 보이게
                                             if(isChecked[0].contains(true) &&isChecked[1].contains(true) &&isChecked[2].contains(true) &&isChecked[3].contains(true) &&isChecked[4].contains(true)){
                                               isVisible = true;
                                             }
+                                            //모든 구간이 체크되지 않았다면 보이지 않게
                                             else{
                                               isVisible = false;
                                             }
@@ -134,12 +145,24 @@ class _AutoAllNumberBySectionScreenState
         ],
       ),
       floatingActionButton: Visibility(
+        visible: isVisible,
         child: FloatingActionButton(
           onPressed: (){
+
+            setState(() {
+              if(result.sum >6 || result.sum <6){
+                Utils().showSnackBar(context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
+              }
+              else {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AutoAllNumberLotteryAboutCheckScreen(result: result)));
+              }
+
+            });
+
+
           },
           child: Icon(Icons.arrow_forward,size: 40,),
         ),
-        visible: isVisible,
       ),
     );
   }

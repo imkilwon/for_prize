@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 class Utils{
 
@@ -27,4 +28,13 @@ class Utils{
       return result;
     }
   }
+
+   showSnackBar({required BuildContext context, required String content}) {
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+       backgroundColor: Colors.white,
+       duration: const Duration(seconds: 1),
+       content: Text(content,style: const TextStyle(color: Colors.black),),
+     ));
+   }
+
 }
