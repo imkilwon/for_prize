@@ -3,17 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
 
-class AutoAllNumberLotteryAboutCheckScreen extends StatefulWidget {
+class AutoLotteryAboutCheckScreen extends StatefulWidget {
   final List<int> result;
-  const AutoAllNumberLotteryAboutCheckScreen({Key? key,required this.result}) : super(key: key);
+  const AutoLotteryAboutCheckScreen({Key? key,required this.result}) : super(key: key);
 
   @override
-  State<AutoAllNumberLotteryAboutCheckScreen> createState() =>
-      _AutoAllNumberLotteryAboutCheckScreenState();
+  State<AutoLotteryAboutCheckScreen> createState() =>
+      _AutoLotteryAboutCheckScreenState();
 }
 
-class _AutoAllNumberLotteryAboutCheckScreenState
-    extends State<AutoAllNumberLotteryAboutCheckScreen> {
+class _AutoLotteryAboutCheckScreenState
+    extends State<AutoLotteryAboutCheckScreen> {
   List<List<int>> numberSet = [];
   List<List<int>> sectionNum = [
     [1, 2, 3, 4, 5, 6, 7, 8, 9,10],
@@ -46,7 +46,6 @@ class _AutoAllNumberLotteryAboutCheckScreenState
                 ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        print(widget.result);
                         tmp.clear();
                         for(int i = 0; i<widget.result.length; i++){
                           cnt = 0;
@@ -56,7 +55,7 @@ class _AutoAllNumberLotteryAboutCheckScreenState
                             if(cnt == widget.result[i]){
                               break;
                             }
-                            if((!(tmp.contains(sectionNum[i][rnd])))||(sectionNum[i][rnd]!=0)){
+                            if((!(tmp.contains(sectionNum[i][rnd])))&&(sectionNum[i][rnd]!=0)){
                               //인덱스에 해당하는 숫자가 들어가지 않았다면 그리고 해당 값이 0이 아니라면
                               tmp.add(sectionNum[i][rnd]);
                               //넣어주면서 개수 추가

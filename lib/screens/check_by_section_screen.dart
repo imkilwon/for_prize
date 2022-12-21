@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:for_prize/main.dart';
-import 'package:for_prize/screens/auto_all_number_lottery_about_check_screen.dart';
+import 'package:for_prize/screens/auto_lottery_about_check_screen.dart';
 import 'package:for_prize/screens/auto_select_num_lottery_about_check_screen.dart';
+import 'package:for_prize/screens/semi_auto_lottery_about_check_screen.dart';
 import 'package:for_prize/utils/utils.dart';
 
-class AutoCheckBySectionScreen extends StatefulWidget {
-
+class CheckBySectionScreen extends StatefulWidget {
   final int pageNum;
+
   //pageNum == 1 -> 구간 선택만 / 2 -> 숫자 선택 후 구간 선택까지
 
   //모든 숫자에서 구간별 개수 선택하여 추출 스크린
-  const AutoCheckBySectionScreen({Key? key,required this.pageNum}) : super(key: key);
+  const CheckBySectionScreen({Key? key, required this.pageNum})
+      : super(key: key);
 
   @override
-  State<AutoCheckBySectionScreen> createState() =>
-      _AutoCheckBySectionScreenState();
+  State<CheckBySectionScreen> createState() => _CheckBySectionScreenState();
 }
 
-class _AutoCheckBySectionScreenState
-    extends State<AutoCheckBySectionScreen> {
+class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
+  List<int> holdNumber=[];
+
   List<String> sectionName = ["1~10", "11~20", "21~30", "31~40", "41~45"];
   List<List<int>> sectionCnt = [
     [0, 1, 2, 3, 4, 5, 6],
@@ -36,8 +38,12 @@ class _AutoCheckBySectionScreenState
     [false, false, false, false, false, false, false],
     [false, false, false, false, false, false, false],
   ];
-  List<int> result = [0,0,0,0,0];
+  List<int> result = [0, 0, 0, 0, 0];
 
+  @override
+  void initState(){
+    holdNumber = Utils().readStringListData("Hold Number");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,17 +127,26 @@ class _AutoCheckBySectionScreenState
                                         setState(
                                           () {
                                             //현재 클릭한 것 제외하고는 모두 체크가 될 수 없게 하는 코드
-                                            isChecked[index_ex] = isChecked[index_ex].map((e)=>false).toList();
+                                            isChecked[index_ex] =
+                                                isChecked[index_ex]
+                                                    .map((e) => false)
+                                                    .toList();
                                             //누른 값이 체크 되게 함
                                             isChecked[index_ex][index_in] =
                                                 value!;
-                                            result[index_ex] = isChecked[index_ex].indexOf(true);
+                                            result[index_ex] =
+                                                isChecked[index_ex]
+                                                    .indexOf(true);
                                             //모든 구간을 체크했으면, 숨겨진 Floating Button 보이게
-                                            if(isChecked[0].contains(true) &&isChecked[1].contains(true) &&isChecked[2].contains(true) &&isChecked[3].contains(true) &&isChecked[4].contains(true)){
+                                            if (isChecked[0].contains(true) &&
+                                                isChecked[1].contains(true) &&
+                                                isChecked[2].contains(true) &&
+                                                isChecked[3].contains(true) &&
+                                                isChecked[4].contains(true)) {
                                               isVisible = true;
                                             }
                                             //모든 구간이 체크되지 않았다면 보이지 않게
-                                            else{
+                                            else {
                                               isVisible = false;
                                             }
                                           },
@@ -152,21 +167,51 @@ class _AutoCheckBySectionScreenState
       floatingActionButton: Visibility(
         visible: isVisible,
         child: FloatingActionButton(
-          onPressed: (){
-
+          onPressed: () {
             setState(() {
-              if(result.sum >6 || result.sum <6){
-                Utils().showSnackBar(context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
+              if(widget.pageNum==3 || widget.pageNum==4) {
+                // 반자동일때
+                var sum = result.sum + holdNumber.length;
+                if (sum != 6) {
+                  Utils().showSnackBar(
+                      context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
+                }
+                else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          widget.pageNum == 3
+                              ? SemiAutoLotteryAboutCheckScreen(
+                            result: result,holdNumber: holdNumber,)
+                              : Utils().showSnackBar(
+                              context: context, content: "content")));
+                }
               }
-              else {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> widget.pageNum ==1 ? AutoAllNumberLotteryAboutCheckScreen(result: result): AutoSelectNumLotteryAboutCheckScreen(result:result,)));
+              else{
+                if (result.sum != 6) {
+                  Utils().showSnackBar(
+                      context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
+                }
+                else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          widget.pageNum == 1
+                              ? AutoLotteryAboutCheckScreen(result: result)
+                              : AutoSelectNumLotteryAboutCheckScreen(
+                            result: result,
+                          )
+                      ));
+                }
               }
-
             });
-
-
           },
-          child: Icon(Icons.arrow_forward,size: 40,),
+          child: Icon(
+            Icons.arrow_forward,
+            size: 40,
+          ),
         ),
       ),
     );

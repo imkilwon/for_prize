@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:for_prize/main.dart';
+import 'package:for_prize/screens/check_by_section_screen.dart';
 import 'package:for_prize/screens/hold_number_page.dart';
 import 'package:for_prize/screens/select_num_screen.dart';
 import 'package:for_prize/screens/semi_auto_all_number_lottery_screen.dart';
@@ -70,9 +71,9 @@ class _SemiAutoLotteryScreenState extends State<SemiAutoLotteryScreen> {
             const FunctionGuideWidget(functionName: "전체 숫자 중 추첨", page: SemiAutoAllNumberLotteryScreen()),
             FunctionGuideWidget(functionName: "선택한 숫자 중 추첨", page:SelectNumScreen(holdLength: holdNumber.length,pageNum: 3,)),
             FunctionGuideWidget(
-                functionName: "각 구간별 개수 선택 후 추첨", page: ForPrize()),
+                functionName: "각 구간별 개수 선택 후 추첨", page: CheckBySectionScreen(pageNum: 3,)),
             FunctionGuideWidget(
-                functionName: "숫자 선택 후 구간별 개수 추첨", page: ForPrize()),
+                functionName: "숫자 선택 후 구간별 개수 추첨", page: SelectNumScreen(pageNum: 4,)),
             Divider(
               height: 15,
               color: Colors.white,

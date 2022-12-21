@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:for_prize/screens/auto_check_by_section_screen.dart';
+import 'package:for_prize/screens/check_by_section_screen.dart';
 import 'package:for_prize/screens/auto_select_number_lottery_screen.dart';
 import 'package:for_prize/screens/semi_auto_select_number_lottery_screen.dart';
 
@@ -19,6 +19,7 @@ class SelectNumScreen extends StatefulWidget {
 }
 
 class _SelectNumScreenState extends State<SelectNumScreen> {
+  List<int> holdNumber =[];
   bool isVisible = false;
   List<List<int>> resultSet = [];
 
@@ -27,6 +28,12 @@ class _SelectNumScreenState extends State<SelectNumScreen> {
 
   //생성된 값을 넣을 lottoSet
   List<int> numberSet = [];
+
+  @override
+  void initState(){
+    super.initState();
+    holdNumber = Utils().readStringListData("Hold Number");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +81,15 @@ class _SelectNumScreenState extends State<SelectNumScreen> {
                     onSelected: (newBool) {
                       //누르면 효과를 적어주기 위해 onSelected옵션
                       setState(() {
+
+                        //고정된 번호가 있는 pageNum 3,4에서는 고정된 번호를 선택할 때, 메세지로 알려주어야 함.
+                        if((widget.pageNum == 3)||(widget.pageNum ==4)){
+                          if(holdNumber.contains(i+1)){
+                            Utils().showSnackBar(context: context, content: "고정하신 숫자를 선택하실 수 없습니다.");
+                            return;
+                          }
+                        }
+
                         //눌렀을 때 화면의 상태를 어떻게 변경시킬지에 대해 적을 setState
                         isClicked[i] = !isClicked[i];
                         //selectedIndex에 i를 넣어서 해당 번호가 selected에서 true가 되게 만든다.
@@ -112,8 +128,9 @@ class _SelectNumScreenState extends State<SelectNumScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => widget.pageNum == 1 ?
-                    AutoSelectNumberLotteryScreen(numberSet: numberSet) : widget.pageNum== 2 ?
-                    AutoCheckBySectionScreen(pageNum: 2,)
+                    AutoSelectNumberLotteryScreen(numberSet: numberSet)
+                        : widget.pageNum== 2 ?
+                    CheckBySectionScreen(pageNum: 2,)
                         : widget.pageNum == 3 ?
                     SemiAutoSelectNumberLotteryScreen(numberSet: numberSet)
                             : Utils()

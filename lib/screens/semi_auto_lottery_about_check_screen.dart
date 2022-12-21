@@ -1,19 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:for_prize/utils/utils.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
 
-class AutoSelectNumLotteryAboutCheckScreen extends StatefulWidget {
-  final result;
-
-  const AutoSelectNumLotteryAboutCheckScreen({Key? key,required this.result}) : super(key: key);
+class SemiAutoLotteryAboutCheckScreen extends StatefulWidget {
+  List<int> result;
+  List<int> holdNumber;
+  SemiAutoLotteryAboutCheckScreen({Key? key,required this.result,required this.holdNumber}) : super(key: key);
 
   @override
-  State<AutoSelectNumLotteryAboutCheckScreen> createState() => _AutoSelectNumLotteryAboutCheckScreenState();
+  State<SemiAutoLotteryAboutCheckScreen> createState() => _SemiAutoLotteryAboutCheckScreenState();
 }
 
-class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLotteryAboutCheckScreen> {
-  List<List<int>> numberSet = [];
+class _SemiAutoLotteryAboutCheckScreenState extends State<SemiAutoLotteryAboutCheckScreen> {
   List<List<int>> sectionNum = [
     [1, 2, 3, 4, 5, 6, 7, 8, 9,10],
     [11, 12, 13, 14, 15, 16, 17, 18, 19,20],
@@ -22,10 +22,12 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
     [41, 42, 43, 44, 45,0,0,0,0,0]
   ];
 
+  List<List<int>> numberSet = [];
   @override
   Widget build(BuildContext context) {
     List<int> tmp = [];
     int cnt = 0;
+
     return Scaffold(
         backgroundColor: Colors.blue[800],
         appBar: PreferredSize(
@@ -36,9 +38,9 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  "자동으로 \n번호 추첨하기",
+                  "고정된 번호에서\n구간별로 정한 숫자만큼\n번호 추출하기",
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
@@ -46,6 +48,7 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
                     onPressed: () {
                       setState(() {
                         tmp.clear();
+                        tmp.addAll(widget.holdNumber);
                         for(int i = 0; i<widget.result.length; i++){
                           cnt = 0;
                           while(true){
@@ -78,49 +81,39 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
           ),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            physics: ScrollPhysics(),
-            child: Column(
-              children: [
-                Center(child: Text("구간의 개수와 숫자가 맞지 않을 시 제대로 나오지 않을 수 있습니다.",style: TextStyle(color: Colors.white60),)),
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                    itemCount: numberSet.length,
-                    itemBuilder: (context, index_ex) {
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(10),
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white54,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Row(
-                          children: [
-                            Text("${index_ex + 1}.",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                            SizedBox(width: 15,),
-                            ListView.separated(
-                              shrinkWrap: true,
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(
-                                  width: 6,
-                                );
-                              },
-                              itemCount: 6,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index_in) {
-                                return Number(numberSet[index_ex][index_in]);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-              ],
-            ),
-          ),
+          child: ListView.builder(
+              itemCount: numberSet.length,
+              itemBuilder: (context, index_ex) {
+                return Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white54,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Row(
+                    children: [
+                      Text("${index_ex + 1}.",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                      SizedBox(width: 15,),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            width: 6,
+                          );
+                        },
+                        itemCount: numberSet[index_ex].length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index_in) {
+                          return Number(numberSet[index_ex][index_in]);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }),
         ));
   }
 }
