@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:for_prize/screens/check_by_section_screen.dart';
 import 'package:for_prize/screens/auto_select_number_lottery_screen.dart';
+import 'package:for_prize/screens/semi_auto_select_num_about_check_screen.dart';
 import 'package:for_prize/screens/semi_auto_select_number_lottery_screen.dart';
 
 import '../utils/utils.dart';
@@ -130,11 +131,10 @@ class _SelectNumScreenState extends State<SelectNumScreen> {
                     builder: (context) => widget.pageNum == 1 ?
                     AutoSelectNumberLotteryScreen(numberSet: numberSet)
                         : widget.pageNum== 2 ?
-                    CheckBySectionScreen(pageNum: 2,)
+                    CheckBySectionScreen(pageNum: 2,selectNum: numberSet,)
                         : widget.pageNum == 3 ?
                     SemiAutoSelectNumberLotteryScreen(numberSet: numberSet)
-                            : Utils()
-                                .showSnackBar(context: context, content: "hi"),
+                            : CheckBySectionScreen(pageNum: 4,selectNum: numberSet,),
                   ));
             });
           },

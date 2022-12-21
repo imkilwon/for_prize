@@ -4,15 +4,17 @@ import 'package:for_prize/main.dart';
 import 'package:for_prize/screens/auto_lottery_about_check_screen.dart';
 import 'package:for_prize/screens/auto_select_num_lottery_about_check_screen.dart';
 import 'package:for_prize/screens/semi_auto_lottery_about_check_screen.dart';
+import 'package:for_prize/screens/semi_auto_select_num_about_check_screen.dart';
 import 'package:for_prize/utils/utils.dart';
 
 class CheckBySectionScreen extends StatefulWidget {
   final int pageNum;
 
   //pageNum == 1 -> 구간 선택만 / 2 -> 숫자 선택 후 구간 선택까지
+  final selectNum;
 
   //모든 숫자에서 구간별 개수 선택하여 추출 스크린
-  const CheckBySectionScreen({Key? key, required this.pageNum})
+  const CheckBySectionScreen({Key? key, required this.pageNum, this.selectNum})
       : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class CheckBySectionScreen extends StatefulWidget {
 }
 
 class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
-  List<int> holdNumber=[];
+  List<int> holdNumber = [];
 
   List<String> sectionName = ["1~10", "11~20", "21~30", "31~40", "41~45"];
   List<List<int>> sectionCnt = [
@@ -41,9 +43,11 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
   List<int> result = [0, 0, 0, 0, 0];
 
   @override
-  void initState(){
+  void initState() {
+    super.initState();
     holdNumber = Utils().readStringListData("Hold Number");
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +75,8 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0),
+          const Padding(
+            padding:EdgeInsets.only(top: 12.0),
             child: Center(
                 child: Text(
               "좌우로 드래그하시면 체크 박스가 더 있습니다.",
@@ -84,9 +88,9 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemCount: 5,
-                itemBuilder: (context, index_ex) {
+                itemBuilder: (context, indexEx) {
                   return Container(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     height: 80,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -95,10 +99,10 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
                     child: Row(
                       children: [
                         Container(
-                            padding: EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.only(left: 10),
                             width: 65,
                             child: Text(
-                              sectionName[index_ex],
+                              sectionName[indexEx],
                               style: TextStyle(
                                   color: Colors.blue[800],
                                   fontWeight: FontWeight.bold),
@@ -106,36 +110,36 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
                         Expanded(
                           child: ListView.separated(
                               separatorBuilder: (context, index) {
-                                return SizedBox(
+                                return const SizedBox(
                                   width: 1,
                                 );
                               },
                               shrinkWrap: true,
                               itemCount: 7,
                               scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index_in) {
+                              itemBuilder: (context, indexIn) {
                                 return Column(
                                   children: [
                                     Text(
-                                      (index_in).toString(),
+                                      (indexIn).toString(),
                                       style: TextStyle(color: Colors.blue[800]),
                                     ),
                                     Checkbox(
                                       activeColor: Colors.greenAccent,
-                                      value: isChecked[index_ex][index_in],
+                                      value: isChecked[indexEx][indexIn],
                                       onChanged: (bool? value) {
                                         setState(
                                           () {
                                             //현재 클릭한 것 제외하고는 모두 체크가 될 수 없게 하는 코드
-                                            isChecked[index_ex] =
-                                                isChecked[index_ex]
+                                            isChecked[indexEx] =
+                                                isChecked[indexEx]
                                                     .map((e) => false)
                                                     .toList();
                                             //누른 값이 체크 되게 함
-                                            isChecked[index_ex][index_in] =
+                                            isChecked[indexEx][indexIn] =
                                                 value!;
-                                            result[index_ex] =
-                                                isChecked[index_ex]
+                                            result[indexEx] =
+                                                isChecked[indexEx]
                                                     .indexOf(true);
                                             //모든 구간을 체크했으면, 숨겨진 Floating Button 보이게
                                             if (isChecked[0].contains(true) &&
@@ -169,46 +173,46 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
         child: FloatingActionButton(
           onPressed: () {
             setState(() {
-              if(widget.pageNum==3 || widget.pageNum==4) {
+              if (widget.pageNum == 3 || widget.pageNum == 4) {
                 // 반자동일때
                 var sum = result.sum + holdNumber.length;
                 if (sum != 6) {
                   Utils().showSnackBar(
                       context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
-                }
-                else {
+                } else {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                          widget.pageNum == 3
+                          builder: (context) => widget.pageNum == 3
                               ? SemiAutoLotteryAboutCheckScreen(
-                            result: result,holdNumber: holdNumber,)
-                              : Utils().showSnackBar(
-                              context: context, content: "content")));
+                                  result: result,
+                                  holdNumber: holdNumber,
+                                )
+                              : SemiAutoSelectNumAboutCheckScreen(
+                                  result: result,
+                                  selectNum: widget.selectNum,
+                                  holdNumber: holdNumber,
+                                )));
                 }
-              }
-              else{
+              } else {
                 if (result.sum != 6) {
                   Utils().showSnackBar(
                       context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
-                }
-                else {
+                } else {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                          widget.pageNum == 1
+                          builder: (context) => widget.pageNum == 1
                               ? AutoLotteryAboutCheckScreen(result: result)
                               : AutoSelectNumLotteryAboutCheckScreen(
-                            result: result,
-                          )
-                      ));
+                                  result: result,
+                                  selectNum: widget.selectNum,
+                                )));
                 }
               }
             });
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_forward,
             size: 40,
           ),

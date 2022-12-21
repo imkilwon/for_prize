@@ -3,17 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
 
-class AutoSelectNumLotteryAboutCheckScreen extends StatefulWidget {
+class SemiAutoSelectNumAboutCheckScreen extends StatefulWidget {
   final selectNum;
+  final holdNumber;
   final result;
-
-  const AutoSelectNumLotteryAboutCheckScreen({Key? key,required this.result,this.selectNum}) : super(key: key);
+  const SemiAutoSelectNumAboutCheckScreen({Key? key,required this.result,required this.selectNum,required this.holdNumber}) : super(key: key);
 
   @override
-  State<AutoSelectNumLotteryAboutCheckScreen> createState() => _AutoSelectNumLotteryAboutCheckScreenState();
+  State<SemiAutoSelectNumAboutCheckScreen> createState() => _SemiAutoSelectNumAboutCheckScreenState();
 }
 
-class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLotteryAboutCheckScreen> {
+class _SemiAutoSelectNumAboutCheckScreenState extends State<SemiAutoSelectNumAboutCheckScreen> {
   List<List<int>> numberSet = [];
   List<List<int>> sectionNum = [
     [1, 2, 3, 4, 5, 6, 7, 8, 9,10],
@@ -47,6 +47,7 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
                     onPressed: () {
                       setState(() {
                         tmp.clear();
+                        tmp.addAll(widget.holdNumber);
                         for(int i = 0; i<widget.result.length; i++){
                           cnt = 0;
                           while(true){
@@ -83,12 +84,12 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
             physics: ScrollPhysics(),
             child: Column(
               children: [
-                Center(child: Text("구간의 개수와 숫자가 맞지 않을 시 제대로 나오지 않을 수 있습니다.",style: TextStyle(color: Colors.white60),)),
+                const Center(child: Text("구간의 개수와 숫자가 맞지 않을 시 제대로 나오지 않을 수 있습니다.",style: TextStyle(color: Colors.white60),)),
                 ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount: numberSet.length,
-                    itemBuilder: (context, index_ex) {
+                    itemBuilder: (context, indexEx) {
                       return Container(
                         margin: EdgeInsets.all(10),
                         padding: EdgeInsets.all(10),
@@ -100,8 +101,8 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
                         ),
                         child: Row(
                           children: [
-                            Text("${index_ex + 1}.",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                            SizedBox(width: 15,),
+                            Text("${indexEx + 1}.",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                            const SizedBox(width: 15,),
                             ListView.separated(
                               shrinkWrap: true,
                               separatorBuilder: (context, index) {
@@ -109,10 +110,10 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
                                   width: 6,
                                 );
                               },
-                              itemCount: 6,
+                              itemCount: numberSet[indexEx].length,
                               scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index_in) {
-                                return Number(numberSet[index_ex][index_in]);
+                              itemBuilder: (context, indexIn) {
+                                return Number(numberSet[indexEx][indexIn]);
                               },
                             ),
                           ],
