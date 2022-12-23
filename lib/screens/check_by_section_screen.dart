@@ -22,8 +22,9 @@ class CheckBySectionScreen extends StatefulWidget {
 }
 
 class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
-  List<int> holdNumber = [];
 
+  List<int> resultCnt = [0,0,0,0,0];
+  List<int> holdNumber = [];
   List<String> sectionName = ["1~10", "11~20", "21~30", "31~40", "41~45"];
   List<List<int>> sectionCnt = [
     [0, 1, 2, 3, 4, 5, 6],
@@ -41,6 +42,23 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
     [false, false, false, false, false, false, false],
   ];
   List<int> result = [0, 0, 0, 0, 0];
+  bool breakPoint = true;
+  CountResultNum(List<int> selectNum){
+    for (int i = 0; i<selectNum.length; i++){
+      if (0 < selectNum[i] && selectNum[i]<=10){
+        resultCnt[0]++;
+      }else if(11 < selectNum[i] && selectNum[i] <= 20){
+        resultCnt[1]++;
+      }else if(21 < selectNum[i] && selectNum[i] <= 30){
+        resultCnt[2]++;
+      }else if(31 < selectNum[i] && selectNum[i] <= 40){
+        resultCnt[3]++;
+      }else if(41 < selectNum[i] && selectNum[i] <= 45){
+        resultCnt[4]++;
+      }
+    }
+  }
+
 
   @override
   void initState() {
@@ -76,7 +94,7 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
             ),
           ),
           const Padding(
-            padding:EdgeInsets.only(top: 12.0),
+            padding: EdgeInsets.only(top: 12.0),
             child: Center(
                 child: Text(
               "좌우로 드래그하시면 체크 박스가 더 있습니다.",
@@ -138,9 +156,8 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
                                             //누른 값이 체크 되게 함
                                             isChecked[indexEx][indexIn] =
                                                 value!;
-                                            result[indexEx] =
-                                                isChecked[indexEx]
-                                                    .indexOf(true);
+                                            result[indexEx] = isChecked[indexEx]
+                                                .indexOf(true);
                                             //모든 구간을 체크했으면, 숨겨진 Floating Button 보이게
                                             if (isChecked[0].contains(true) &&
                                                 isChecked[1].contains(true) &&
@@ -173,42 +190,63 @@ class _CheckBySectionScreenState extends State<CheckBySectionScreen> {
         child: FloatingActionButton(
           onPressed: () {
             setState(() {
-              if (widget.pageNum == 3 || widget.pageNum == 4) {
-                // 반자동일때
-                var sum = result.sum + holdNumber.length;
-                if (sum != 6) {
-                  Utils().showSnackBar(
-                      context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
+              if(widget.selectNum != null){
+                CountResultNum(widget.selectNum);
+                for(int i = 0; i<5; i++){
+                  if(resultCnt[i] < result[i]){
+                    //선택한 숫자 목록에서 구간별 개수가 선택한 구간 개수보다 적으면 다시 시도하게 하는 코드
+                    breakPoint = false;
+                  }
+                }
+              }
+              else{
+                breakPoint = true;
+              }
+
+
+
+              if(breakPoint){
+                if (widget.pageNum == 3 || widget.pageNum == 4) {
+                  // 반자동일때
+                  var sum = result.sum + holdNumber.length;
+                  if (sum != 6) {
+                    Utils().showSnackBar(
+                        context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => widget.pageNum == 3
+                                ? SemiAutoLotteryAboutCheckScreen(
+                                    result: result,
+                                    holdNumber: holdNumber,
+                                  )
+                                : SemiAutoSelectNumAboutCheckScreen(
+                                    result: result,
+                                    selectNum: widget.selectNum,
+                                    holdNumber: holdNumber,
+                                  )));
+                  }
                 } else {
-                  Navigator.push(
+                  if (result.sum != 6) {
+                    Utils().showSnackBar(
+                        context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
+                  } else {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => widget.pageNum == 3
-                              ? SemiAutoLotteryAboutCheckScreen(
-                                  result: result,
-                                  holdNumber: holdNumber,
-                                )
-                              : SemiAutoSelectNumAboutCheckScreen(
-                                  result: result,
-                                  selectNum: widget.selectNum,
-                                  holdNumber: holdNumber,
-                                )));
+                        builder: (context) => widget.pageNum == 1
+                            ? AutoLotteryAboutCheckScreen(result: result)
+                            : AutoSelectNumLotteryAboutCheckScreen(
+                                result: result,
+                                selectNum: widget.selectNum,
+                              ),
+                      ),
+                    );
+                  }
                 }
-              } else {
-                if (result.sum != 6) {
-                  Utils().showSnackBar(
-                      context: context, content: "모든 구간의 개수 합이 6이 되어야 합니다.");
-                } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => widget.pageNum == 1
-                              ? AutoLotteryAboutCheckScreen(result: result)
-                              : AutoSelectNumLotteryAboutCheckScreen(
-                                  result: result,
-                                  selectNum: widget.selectNum,
-                                )));
-                }
+              }else{
+                Utils().showSnackBar(context: context, content: "선택하신 숫자가 구간 개수보다 적습니다.");
               }
             });
           },
