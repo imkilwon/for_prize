@@ -2,12 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
+import 'package:for_prize/widgets/show_result_num_widget.dart';
 
 class AutoSelectNumLotteryAboutCheckScreen extends StatefulWidget {
-  final selectNum;
-  final result;
+  final List<int>selectNum;
+  //선택한 숫자
+  final List<int>result;
+  //구간별 개수
 
-  const AutoSelectNumLotteryAboutCheckScreen({Key? key,required this.result,this.selectNum}) : super(key: key);
+  const AutoSelectNumLotteryAboutCheckScreen({Key? key,required this.result,required this.selectNum}) : super(key: key);
 
   @override
   State<AutoSelectNumLotteryAboutCheckScreen> createState() => _AutoSelectNumLotteryAboutCheckScreenState();
@@ -55,7 +58,7 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
                             if(cnt == widget.result[i]){
                               break;
                             }
-                            if((!(tmp.contains(sectionNum[i][rnd])))&&(sectionNum[i][rnd]!=0)){
+                            if((!(tmp.contains(sectionNum[i][rnd])))&&(sectionNum[i][rnd]!=0)&&(!widget.selectNum.contains(sectionNum[i][rnd]))){
                               //인덱스에 해당하는 숫자가 들어가지 않았다면 그리고 해당 값이 0이 아니라면
                               tmp.add(sectionNum[i][rnd]);
                               //넣어주면서 개수 추가
@@ -88,36 +91,8 @@ class _AutoSelectNumLotteryAboutCheckScreenState extends State<AutoSelectNumLott
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                     itemCount: numberSet.length,
-                    itemBuilder: (context, index_ex) {
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(10),
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white54,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Row(
-                          children: [
-                            Text("${index_ex + 1}.",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                            SizedBox(width: 15,),
-                            ListView.separated(
-                              shrinkWrap: true,
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(
-                                  width: 6,
-                                );
-                              },
-                              itemCount: 6,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index_in) {
-                                return Number(numberSet[index_ex][index_in]);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
+                    itemBuilder: (context, indexEx) {
+                      return ShowResultNumWidget(numberSet: numberSet, indexEx: indexEx);
                     }),
               ],
             ),

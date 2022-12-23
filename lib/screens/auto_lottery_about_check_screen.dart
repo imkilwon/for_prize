@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:for_prize/widgets/show_number_widget.dart';
+import 'package:for_prize/widgets/show_result_num_widget.dart';
 
 class AutoLotteryAboutCheckScreen extends StatefulWidget {
   final List<int> result;
@@ -81,36 +82,8 @@ class _AutoLotteryAboutCheckScreenState
         body: SafeArea(
           child: ListView.builder(
               itemCount: numberSet.length,
-              itemBuilder: (context, index_ex) {
-                return Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white54,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Row(
-                    children: [
-                      Text("${index_ex + 1}.",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                      SizedBox(width: 15,),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            width: 6,
-                          );
-                        },
-                        itemCount: 6,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index_in) {
-                          return Number(numberSet[index_ex][index_in]);
-                        },
-                      ),
-                    ],
-                  ),
-                );
+              itemBuilder: (context, indexEx) {
+                return ShowResultNumWidget(numberSet: numberSet, indexEx: indexEx);
               }),
         ));
   }

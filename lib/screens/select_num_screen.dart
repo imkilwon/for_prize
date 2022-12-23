@@ -74,6 +74,7 @@ class _SelectNumScreenState extends State<SelectNumScreen> {
                 for (int i = 0; i < 45; i++)
                   //위젯을 여러 개 사용해야 하므로 for를 이용한다.
                   ChoiceChip(
+                    selectedColor: Colors.yellowAccent,
                     //로또 번호를 선택할 수 있게 만들어주는 ChoiceChip 사용
                     label: Text("${i + 1}"),
                     //해당 ChoiceChip에 번호를 나타내야하므로 적음

@@ -50,18 +50,19 @@ class _SemiAutoAllNumberLotteryScreenState
                     onPressed: () {
                       setState(() {
                         tmp.clear();
+                        tmp.addAll(holdNumber);
+
                         //여러 번 누를 수 있기 때문에 누를 때마다 clear할 수 있게 만듦
                         while (true) {
                           var rnd = Random().nextInt(45) + 1;
                           //1~45까지 수에서 랜덤하게 하나씩 뽑음
-
+                          print(rnd);
                           if (!tmp.contains(rnd)) {
                             //lottoSet에 랜덤 숫자가 없다? == 중복되지 않은 숫자
                             tmp.add(rnd);
                             //lottoSet에 넣음
                           }
-                          if (tmp.length+holdNumber.length == 6) {
-                            tmp.addAll(holdNumber);
+                          if (tmp.length== 6) {
                             tmp.sort();
                             var result = tmp;
                             numberSet.add(result);

@@ -40,8 +40,8 @@ class ForPrize extends StatelessWidget {
                 Text("${dates[0].toString()} / ${dates[1].toString()} / ${dates[2].toString()}",style: TextStyle(fontSize: 17,color: Colors.white.withOpacity(0.4),fontWeight: FontWeight.bold),),
                 ],
             ),
-            ShowNumberWidget(showText: "전 주의 추천 번호",numSet: [12,16,43,32,33,6],),
-            ShowNumberWidget(showText: "전 주의 당첨 번호",numSet: [12,16,43,32,33,6],),
+            ShowNumberWidget(showText: "전 주의 추천 번호",numSet: [6,12,16,32,33,43],),
+            ShowNumberWidget(showText: "전 주의 당첨 번호",numSet: [6,12,16,32,33,43],),
             Row(
               children: [
                 PageGuideBox(width: (screenSize.width-40)/2, height:screenSize.height*0.3,text: "추천 번호 \n받으러 가기",page: AutoLotteryScreen()),
