@@ -56,7 +56,6 @@ class _SemiAutoAllNumberLotteryScreenState
                         while (true) {
                           var rnd = Random().nextInt(45) + 1;
                           //1~45까지 수에서 랜덤하게 하나씩 뽑음
-                          print(rnd);
                           if (!tmp.contains(rnd)) {
                             //lottoSet에 랜덤 숫자가 없다? == 중복되지 않은 숫자
                             tmp.add(rnd);
