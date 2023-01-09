@@ -91,7 +91,6 @@ class _SelectNumScreenState extends State<SelectNumScreen> {
                             return;
                           }
                         }
-
                         //눌렀을 때 화면의 상태를 어떻게 변경시킬지에 대해 적을 setState
                         isClicked[i] = !isClicked[i];
                         //selectedIndex에 i를 넣어서 해당 번호가 selected에서 true가 되게 만든다.

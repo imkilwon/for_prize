@@ -38,7 +38,7 @@ class _SemiAutoLotteryAboutCheckScreenState extends State<SemiAutoLotteryAboutCh
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  "고정된 번호에서\n구간별로 정한 숫자만큼\n번호 추출하기",
+                  "고정된 번호와 함께\n구간별로 정한 숫자만큼\n번호 추출하기",
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,

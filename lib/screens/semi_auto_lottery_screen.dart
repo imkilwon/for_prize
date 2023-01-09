@@ -73,7 +73,7 @@ class _SemiAutoLotteryScreenState extends State<SemiAutoLotteryScreen> {
             FunctionGuideWidget(
                 functionName: "각 구간별 개수 선택 후 추첨", page: CheckBySectionScreen(pageNum: 3,)),
             FunctionGuideWidget(
-                functionName: "숫자 선택 후 구간별 개수 추첨", page: SelectNumScreen(pageNum: 4,)),
+                functionName: "숫자 선택 후 구간별 개수 추첨", page: SelectNumScreen(pageNum: 4,holdLength: holdNumber.length,)),
             Divider(
               height: 15,
               color: Colors.white,
